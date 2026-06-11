@@ -1,0 +1,13 @@
+pymupdf
+python-docx
+spacy
+sentence-transformers
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+streamlit
+flask
+joblib
+groq
