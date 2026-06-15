@@ -1,0 +1,8 @@
+We are looking for a Software Engineer with 2+ years of experience 
+building scalable web applications. The ideal candidate should have 
+strong proficiency in JavaScript, React, and Node.js. Experience with 
+MongoDB or PostgreSQL is required. Familiarity with Git, REST APIs, 
+and cloud deployment (AWS or Azure) is a plus. You will be responsible 
+for designing and implementing new features, writing clean and 
+maintainable code, and collaborating with cross-functional teams.
+Required skills: JavaScript, React, Node.js, MongoDB, Git, REST API.
