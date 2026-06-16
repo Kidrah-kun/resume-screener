@@ -112,6 +112,26 @@ def train_classifier(json_path, model_save_dir):
     joblib.dump(vectorizer, os.path.join(model_save_dir, "vectorizer.pkl"))
     print(f"Model saved to {model_save_dir}/classifier.pkl")
 
+    # Feature importance plot — save directly from training script
+    feature_names = vectorizer.get_feature_names_out()
+    
+    if hasattr(best_model, "coef_"):
+        importances = np.abs(best_model.coef_).mean(axis=0)
+    else:
+        importances = best_model.feature_importances_
+
+    top_indices = np.argsort(importances)[-20:]
+    top_features = [feature_names[i] for i in top_indices]
+    top_scores = [importances[i] for i in top_indices]
+
+    plt.figure(figsize=(10, 7))
+    plt.barh(top_features, top_scores, color="steelblue")
+    plt.title("Top 20 most important features")
+    plt.xlabel("Importance score")
+    plt.tight_layout()
+    plt.savefig(os.path.join(BASE_DIR, "reports", "feature_importance.png"))
+    print("Feature importance plot saved to reports/feature_importance.png")
+
     # Save results summary
     with open(os.path.join(model_save_dir, "eval_results.json"), "w") as f:
         json.dump(results, f, indent=2)
