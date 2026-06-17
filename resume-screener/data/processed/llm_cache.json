@@ -1,0 +1,39 @@
+{
+  "eb893d6eee6d8307e57f3bf543996bdb": {
+    "one_liner": "SAP consultant with no relevant experience",
+    "strengths": [],
+    "gaps": [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "MongoDB/PostgreSQL",
+      "Java"
+    ],
+    "recommendation": "Weak Fit",
+    "reasoning": "The candidate lacks experience in required skills such as JavaScript, React, and Node.js. The candidate's background is in SAP consulting, which does not align with the job description's requirements."
+  },
+  "4d70ae15fbd7ad08f7b74bfe26134822": {
+    "one_liner": "Experienced IT director",
+    "strengths": [
+      "Leadership skills",
+      "Analytical skills",
+      "Communication skills"
+    ],
+    "gaps": [
+      "Lack of JavaScript, React, Node.js experience",
+      "No mention of MongoDB or PostgreSQL"
+    ],
+    "recommendation": "Weak Fit",
+    "reasoning": "The candidate has over 20 years of experience in IT, but their skills do not align with the job requirements, which focus on software engineering and specific technologies. The candidate's background is more focused on management and leadership, making them a weak fit for the software engineer position."
+  },
+  "777fcbae5bb701219714836d8849ab90": {
+    "one_liner": "Non-technical executive manager",
+    "strengths": [],
+    "gaps": [
+      "Lack of software engineering experience",
+      "No proficiency in required skills"
+    ],
+    "recommendation": "Weak Fit",
+    "reasoning": "The candidate's background is in manufacturing engineering with no relevant experience in software engineering or proficiency in required skills like JavaScript, React, and Node.js. The candidate does not meet the basic requirements of the job description, making them a weak fit for the position."
+  }
+}

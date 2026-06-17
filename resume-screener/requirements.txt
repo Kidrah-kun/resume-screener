@@ -11,3 +11,4 @@ streamlit
 flask
 joblib
 groq
+python-dotenv
