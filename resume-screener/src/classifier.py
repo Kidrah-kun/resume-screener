@@ -104,7 +104,7 @@ def train_classifier(json_path, model_save_dir):
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.savefig(os.path.join(BASE_DIR, "reports", "confusion_matrix.png"))
-    plt.show()
+    plt.close()
     print("Confusion matrix saved to reports/confusion_matrix.png")
 
     # Save best model + vectorizer
@@ -116,7 +116,7 @@ def train_classifier(json_path, model_save_dir):
     feature_names = vectorizer.get_feature_names_out()
     
     if hasattr(best_model, "coef_"):
-        importances = np.abs(best_model.coef_).mean(axis=0)
+        importances = np.asarray(np.abs(best_model.coef_).mean(axis=0)).flatten()
     else:
         importances = best_model.feature_importances_
 

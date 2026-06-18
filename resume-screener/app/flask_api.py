@@ -1,13 +1,15 @@
 import os
 import sys
-import json
 import tempfile
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-load_dotenv()
+
+# Load .env from the project root explicitly (not cwd-dependent)
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(_PROJECT_ROOT, ".env"))
 
 from src.parser import extract_text
 from src.extractor import parse_resume
@@ -52,13 +54,17 @@ def screen_resumes():
         # Parse all uploaded resumes
         resumes = []
         for file in files:
-            suffix = ".pdf" if file.filename.endswith(".pdf") else ".docx"
+            if not file.filename:
+                continue
+            suffix = ".pdf" if file.filename.lower().endswith(".pdf") else ".docx"
             with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
                 file.save(tmp.name)
                 tmp_path = tmp.name
 
-            raw_text = extract_text(tmp_path)
-            os.unlink(tmp_path)
+            try:
+                raw_text = extract_text(tmp_path)
+            finally:
+                os.unlink(tmp_path)
 
             resume_data = parse_resume(raw_text, filename=file.filename)
             resumes.append(resume_data)
@@ -102,16 +108,18 @@ def classify_resume():
         vec = joblib.load(os.path.join(BASE_DIR, "models", "vectorizer.pkl"))
 
         file = request.files.get("resume")
-        if not file:
+        if not file or not file.filename:
             return jsonify({"error": "No resume file provided"}), 400
 
-        suffix = ".pdf" if file.filename.endswith(".pdf") else ".docx"
+        suffix = ".pdf" if file.filename.lower().endswith(".pdf") else ".docx"
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             file.save(tmp.name)
             tmp_path = tmp.name
 
-        raw_text = extract_text(tmp_path)
-        os.unlink(tmp_path)
+        try:
+            raw_text = extract_text(tmp_path)
+        finally:
+            os.unlink(tmp_path)
 
         X = vec.transform([raw_text])
         category = clf.predict(X)[0]

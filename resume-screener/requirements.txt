@@ -1,6 +1,7 @@
 pymupdf
 python-docx
 spacy
+nltk
 sentence-transformers
 scikit-learn
 pandas
@@ -9,6 +10,7 @@ matplotlib
 seaborn
 streamlit
 flask
+flask-cors
 joblib
 groq
 python-dotenv

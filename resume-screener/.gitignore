@@ -1,9 +1,34 @@
+# Virtual environment
 venv/
+.venv/
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+
+# Environment variables
 .env
 *.env
-*.json
-*.pkl
+
+# Data files (too large for git)
+data/raw/Resume.csv
+data/processed/processed_resumes.json
+data/processed/llm_cache.json
+
+# Trained models (too large for git)
+models/*.pkl
+
+# OS files
 .DS_Store
-node_modules/
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/

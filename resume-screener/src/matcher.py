@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -73,17 +72,20 @@ def rank_resumes_tfidf(jd_text, resumes, top_n=10):
         tfidf_score = float(similarities[i])
         keyword_score = compute_keyword_match(resume["skills"], jd_text)
         experience_score = compute_experience_score(resume["experience_years"])
+        completeness_score = resume.get("section_completeness", 0.5)
 
         # Composite score: weighted combination
         composite = (
-            0.5 * tfidf_score +
-            0.3 * keyword_score +
-            0.2 * experience_score
+            0.45 * tfidf_score +
+            0.25 * keyword_score +
+            0.15 * experience_score +
+            0.15 * completeness_score
         )
 
         results.append({
             "rank": 0,  # filled below
             "filename": resume["filename"],
+            "candidate_name": resume.get("candidate_name", ""),
             "category": resume.get("category", "unknown"),
             "skills": resume["skills"],
             "experience_years": resume["experience_years"],
@@ -91,6 +93,7 @@ def rank_resumes_tfidf(jd_text, resumes, top_n=10):
             "tfidf_score": round(tfidf_score, 4),
             "keyword_score": round(keyword_score, 4),
             "experience_score": round(experience_score, 4),
+            "completeness_score": round(completeness_score, 4),
             "composite_score": round(composite, 4),
         })
 
@@ -145,16 +148,19 @@ def rank_resumes_semantic(jd_text, resumes, top_n=10, model_name="all-MiniLM-L6-
         semantic_score = float(similarities[i])
         keyword_score = compute_keyword_match(resume["skills"], jd_text)
         experience_score = compute_experience_score(resume["experience_years"])
+        completeness_score = resume.get("section_completeness", 0.5)
 
         composite = (
-            0.5 * semantic_score +
-            0.3 * keyword_score +
-            0.2 * experience_score
+            0.45 * semantic_score +
+            0.25 * keyword_score +
+            0.15 * experience_score +
+            0.15 * completeness_score
         )
 
         results.append({
             "rank": 0,
             "filename": resume["filename"],
+            "candidate_name": resume.get("candidate_name", ""),
             "category": resume.get("category", "unknown"),
             "skills": resume["skills"],
             "experience_years": resume["experience_years"],
@@ -162,6 +168,7 @@ def rank_resumes_semantic(jd_text, resumes, top_n=10, model_name="all-MiniLM-L6-
             "semantic_score": round(semantic_score, 4),
             "keyword_score": round(keyword_score, 4),
             "experience_score": round(experience_score, 4),
+            "completeness_score": round(completeness_score, 4),
             "composite_score": round(composite, 4),
         })
 

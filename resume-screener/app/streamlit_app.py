@@ -70,13 +70,15 @@ if st.button("🚀 Screen Candidates", type="primary", use_container_width=True)
             resumes = []
             for uploaded_file in uploaded_files:
                 # Save to temp file to extract text
-                suffix = ".pdf" if uploaded_file.name.endswith(".pdf") else ".docx"
+                suffix = ".pdf" if uploaded_file.name.lower().endswith(".pdf") else ".docx"
                 with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
                     tmp.write(uploaded_file.read())
                     tmp_path = tmp.name
 
-                raw_text = extract_text(tmp_path)
-                os.unlink(tmp_path)  # delete temp file
+                try:
+                    raw_text = extract_text(tmp_path)
+                finally:
+                    os.unlink(tmp_path)  # always clean up temp file
 
                 resume_data = parse_resume(raw_text, filename=uploaded_file.name)
                 resumes.append(resume_data)
@@ -108,8 +110,14 @@ if st.button("🚀 Screen Candidates", type="primary", use_container_width=True)
             else:
                 colour = "🔴"
 
+            display_name = r.get("candidate_name", "")
+            if not display_name.strip():
+                display_name = r["filename"]
+            else:
+                display_name = f"{display_name} ({r['filename']})"
+
             with st.expander(
-                f"{colour} Rank #{r['rank']} — {r['filename']} | Score: {score:.2%}",
+                f"{colour} Rank #{r['rank']} — {display_name} | Score: {score:.2%}",
                 expanded=(r["rank"] == 1)
             ):
                 col1, col2, col3 = st.columns(3)
@@ -122,14 +130,17 @@ if st.button("🚀 Screen Candidates", type="primary", use_container_width=True)
 
                 # Score breakdown
                 st.markdown("**Score Breakdown**")
-                breakdown_cols = st.columns(3)
+                breakdown_cols = st.columns(4)
                 sim_score = r.get("semantic_score") or r.get("tfidf_score") or 0
+                completeness = r.get("completeness_score", 0.5)
                 with breakdown_cols[0]:
-                    st.progress(sim_score, text=f"Semantic: {sim_score:.2%}")
+                    st.progress(sim_score, text=f"Similarity: {sim_score:.2%}")
                 with breakdown_cols[1]:
                     st.progress(r["keyword_score"], text=f"Keywords: {r['keyword_score']:.2%}")
                 with breakdown_cols[2]:
                     st.progress(r["experience_score"], text=f"Experience: {r['experience_score']:.2%}")
+                with breakdown_cols[3]:
+                    st.progress(completeness, text=f"Completeness: {completeness:.2%}")
 
                 # Skills
                 if r["skills"]:
