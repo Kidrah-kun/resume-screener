@@ -64,7 +64,7 @@ The system extracts and computes the following features from each resume:
 
 ```
 resume-screener/
-├── resume-screener/              # Python backend
+├── resume-screener-backend/      # Python backend
 │   ├── app/
 │   │   ├── flask_api.py          # REST API (Flask + CORS)
 │   │   └── streamlit_app.py      # Streamlit dashboard for HR personnel
@@ -130,7 +130,7 @@ resume-screener/
 ### Backend Setup
 
 ```bash
-cd resume-screener/resume-screener
+cd resume-screener/resume-screener-backend
 
 # Create and activate virtual environment
 python -m venv venv
@@ -168,7 +168,7 @@ npm start
 ### Streamlit Dashboard (Alternative UI)
 
 ```bash
-cd resume-screener/resume-screener
+cd resume-screener/resume-screener-backend
 source venv/bin/activate
 streamlit run app/streamlit_app.py
 ```
